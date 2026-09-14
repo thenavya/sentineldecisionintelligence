@@ -1,144 +1,105 @@
 # 🛡️ Sentinel — AI Business Autopilot
 
-> **Predict problems. Quantify impact. Simulate decisions. Act safely. Verify outcomes.**
+> **An experimental decision-intelligence system for detecting business problems, estimating impact, simulating interventions, and enforcing safe actions.**
 
-Sentinel is a predictive merchant decision-and-action layer that helps businesses detect revenue-impacting problems before they become major losses.
+**Status: Archived Hackathon Prototype**
 
-Instead of waiting for a merchant to discover that payments, checkout, subscriptions, or other business signals have deteriorated, Sentinel continuously analyzes operational signals, predicts what may happen next, estimates financial exposure, evaluates possible interventions, validates the recommended action against deterministic policies, and verifies the result.
+Sentinel was built as a hackathon prototype exploring a simple question:
 
----
+> **What if a business could identify a revenue-impacting problem, estimate its potential impact, compare possible responses, and only allow actions that pass predefined safety rules?**
 
-## 🚨 The Problem
-
-Most merchant and payment systems are reactive.
-
-A typical workflow looks like:
-
-**Problem occurs → Merchant notices → Team investigates → Team decides → Action is taken**
-
-By the time the problem is discovered, revenue may already have been lost.
-
-Sentinel changes the workflow to:
-
-**Observe → Predict → Quantify → Explain → Simulate → Decide → Policy Check → Act → Verify → Audit**
-
-The goal is not simply to detect an anomaly.
-
-The goal is to answer:
-
-> **"What is likely to happen, how much could it matter, what should we do, and are we allowed to do it?"**
+The project is no longer under active development.
 
 ---
 
-# 💡 What Sentinel Does
+## ⚠️ Prototype Disclaimer
 
-Sentinel combines predictive analytics, financial impact estimation, simulation, deterministic policies, and controlled execution.
+Sentinel is a **demonstration prototype**, not a production financial or payment system.
 
-### 1. Observe
+The current version uses simulated/demo merchant data and modeled outcomes. Its predictive and financial estimates have **not** been validated against production merchant data or live payment infrastructure.
 
-Detect abnormal changes in merchant signals.
-
-Example:
-
-- Baseline payment success rate: **97.8%**
-- Current payment success rate: **91.2%**
-- Degradation: **6.6 percentage points**
+The project should therefore be evaluated as an engineering and product experiment rather than as a production-ready prediction system.
 
 ---
 
-### 2. Predict
+## 🎯 The Problem
 
-Estimate the probability that the disruption will continue.
+Business systems are often reactive:
 
-Current NovaKart demo:
+```text
+Problem occurs
+      ↓
+Merchant notices
+      ↓
+Team investigates
+      ↓
+Team decides
+      ↓
+Action is taken
+```
 
-**99% continued-disruption probability**
+By the time a problem is discovered, its financial impact may already be increasing.
 
-> The current probability model is an MVP demonstration model. A production system would use a trained model on historical merchant data.
+Sentinel explored a more proactive workflow:
 
----
+```text
+Observe
+   ↓
+Predict
+   ↓
+Quantify
+   ↓
+Explain
+   ↓
+Simulate
+   ↓
+Decide
+   ↓
+Policy Check
+   ↓
+Act
+   ↓
+Verify
+   ↓
+Audit
+```
 
-### 3. Quantify
+The goal was not simply to detect an anomaly.
 
-Translate operational degradation into an estimated financial exposure.
+The goal was to help answer:
 
-The MVP estimates one-hour revenue exposure using:
-
-**Affected transaction volume × failure rate × average order value**
-
-For the NovaKart demonstration:
-
-**Estimated exposure: ₹1,95,360**
-
-This is a decision-support estimate, not a guaranteed financial loss.
-
----
-
-### 4. Explain
-
-Sentinel surfaces evidence associated with the degradation.
-
-Example signals:
-
-| Signal | Change |
-|---|---:|
-| UPI | +16.2% |
-| Bank-A | +31.0% |
-| Mobile | +14.0% |
-| Returning users | +11.8% |
-
-These signals help the merchant understand **why Sentinel believes the problem matters**.
-
----
-
-### 5. Simulate
-
-Sentinel uses a Digital Twin-style simulation to compare possible outcomes before taking action.
-
-For NovaKart:
-
-| Scenario | Simulated Success Rate | Estimated Exposure |
-|---|---:|---:|
-| Do nothing | 91.2% | ₹1,95,360 |
-| Intervention A | 97.1% | ₹64,380 |
-| Intervention B | 95.2% | ₹1,06,560 |
-
-The system selects:
-
-### ✅ Intervention A
-
-because it produces the lowest modeled exposure among the simulated permitted scenarios.
-
-> These are modeled outcomes in the MVP, not claims of live payment-network changes.
+> **What is happening, what could happen next, how much could it matter, what could we do, and are we allowed to do it?**
 
 ---
 
-# 🔐 Policy Engine
+## 🧠 Core Architecture
 
-Sentinel does **not** allow an AI model to directly control business actions.
+Sentinel separates **intelligence** from **authority**.
 
-The architecture separates intelligence from authority.
+### Intelligence Layer
 
-### AI / Intelligence Layer
+The system can:
 
-AI can:
-
-- analyze signals
-- predict outcomes
-- explain evidence
-- recommend actions
-- compare scenarios
+* analyze operational signals
+* identify abnormal changes
+* estimate potential outcomes
+* explain contributing signals
+* estimate financial exposure
+* compare intervention scenarios
+* recommend an action
 
 ### Deterministic Policy Layer
 
-Software decides whether an action is allowed based on:
+The AI does **not** independently decide whether an action is allowed.
 
-- confidence threshold
-- action-value limit
-- risk level
-- merchant automation settings
+A deterministic policy layer evaluates conditions such as:
 
-For example:
+* confidence threshold
+* action-value limit
+* risk level
+* merchant automation settings
+
+Example:
 
 ```text
 Confidence ≥ minimum threshold
@@ -148,3 +109,203 @@ AND
 High-risk = false
 AND
 Automatic actions = enabled
+```
+
+This separation was one of the central architectural ideas explored in the project.
+
+---
+
+## 🔄 Example Decision Flow
+
+The prototype demonstrates a hypothetical merchant scenario in which payment success deteriorates.
+
+Example:
+
+```text
+Baseline success rate: 97.8%
+Current success rate:   91.2%
+
+Degradation:            6.6 percentage points
+```
+
+Sentinel then evaluates the situation through several stages.
+
+### 1. Observe
+
+Detect a significant change in merchant signals.
+
+### 2. Predict
+
+Estimate whether the disruption may continue.
+
+The current prototype produces demonstration probabilities using an MVP model.
+
+**Important:** these probabilities are not trained production predictions.
+
+### 3. Quantify
+
+Translate operational degradation into an estimated financial exposure.
+
+The prototype uses:
+
+```text
+Affected transaction volume
+×
+Failure rate
+×
+Average order value
+```
+
+The resulting figure is intended as a **decision-support estimate**, not a guaranteed financial loss.
+
+### 4. Explain
+
+Surface signals associated with the detected degradation.
+
+Example demonstration signals include:
+
+| Signal          | Change |
+| --------------- | -----: |
+| UPI             | +16.2% |
+| Bank-A          | +31.0% |
+| Mobile          | +14.0% |
+| Returning users | +11.8% |
+
+### 5. Simulate
+
+Compare possible interventions before recommending one.
+
+Example modeled scenarios:
+
+| Scenario       | Simulated Success Rate | Estimated Exposure |
+| -------------- | ---------------------: | -----------------: |
+| Do nothing     |                  91.2% |          ₹1,95,360 |
+| Intervention A |                  97.1% |            ₹64,380 |
+| Intervention B |                  95.2% |          ₹1,06,560 |
+
+The prototype selects the scenario with the lowest modeled exposure among the permitted options.
+
+**These are simulated outcomes, not measurements of live payment-network changes.**
+
+---
+
+## 🏗️ Repository Structure
+
+```text
+sentinel-ai-business-autopilot/
+│
+├── backend/              # Backend application and decision logic
+├── frontend/             # Dashboard / user interface
+├── data/                 # Prototype/demo data
+├── docs/                 # Supporting documentation
+├── .github/workflows/    # GitHub Actions workflows
+│
+├── .env.example          # Environment variable template
+├── .gitignore
+├── CONTRIBUTING.md
+├── LICENSE
+├── SECURITY.md
+├── index.html
+└── README.md
+```
+
+---
+
+## 🔐 Safety Philosophy
+
+One of the main ideas explored by Sentinel was:
+
+> **AI should provide intelligence; deterministic software should control authority.**
+
+Instead of allowing an AI model to directly execute arbitrary business actions, the architecture places a policy boundary between recommendation and execution.
+
+This creates a conceptual separation:
+
+```text
+AI
+ ↓
+Recommendation
+ ↓
+Deterministic Policy
+ ↓
+Permission
+ ↓
+Action
+ ↓
+Verification
+```
+
+This pattern can be useful when designing AI systems that interact with consequential business operations.
+
+---
+
+## 🧪 What Is Demonstrated vs. What Is Not
+
+### Demonstrated
+
+* merchant-signal analysis
+* anomaly/problem identification
+* financial-impact estimation
+* scenario comparison
+* policy-based action validation
+* dashboard/application architecture
+* separation between intelligence and authority
+* prototype decision workflow
+
+### Not demonstrated at production level
+
+* validated predictive accuracy on historical merchant datasets
+* causal estimation of intervention outcomes
+* real-time payment-network optimization
+* guaranteed revenue-loss prediction
+* production-scale autonomous financial decisions
+* statistically validated Digital Twin models
+* production merchant deployment
+
+Being explicit about this distinction is intentional.
+
+---
+
+## 💡 What We Learned
+
+The most important lesson from Sentinel was not simply how to build an AI dashboard.
+
+It was the importance of connecting:
+
+**Prediction → Evidence → Financial impact → Decision → Policy → Verification**
+
+A system becomes much more useful when it can explain not only:
+
+> "Something is wrong."
+
+but also:
+
+> "This is what appears to be wrong, this is the estimated impact, these are the available responses, this is why one response is preferable, and these are the rules that determine whether it may be executed."
+
+The project also exposed an important engineering lesson:
+
+**A sophisticated product narrative must be matched by equally strong underlying evidence.**
+
+Future versions of this concept would require real historical datasets, validated models, measured intervention outcomes, and substantially stronger evaluation methodology.
+
+---
+
+## 📌 Project Status
+
+**Archived — Hackathon Prototype**
+
+This repository is preserved as a record of the engineering work, product exploration, and lessons learned during development.
+
+It is not intended to represent a production-ready financial or payment platform.
+
+---
+
+## 👤 Author
+
+Built by **Navya** as an independent hackathon project.
+
+---
+
+## 📄 License
+
+See [`LICENSE`](LICENSE).
